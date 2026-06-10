@@ -17,7 +17,10 @@ base.archivesName = "${property("mod_id")}"
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
-    version = property("neo_version") as String
+    enable {
+        version = property("neo_version") as String
+        disableRecompilation = false
+    }
 
     validateAccessTransformers = true
 
@@ -48,8 +51,6 @@ neoForge {
             programArguments.addAll("--mod", property("mod_id") as String, "--all", "--output", file("src/generated/resources/").absolutePath, "--existing", file("src/main/resources/").absolutePath)
         }
     }
-
-    disableRecompilation = false
 
     addModdingDependenciesTo(sourceSets["main"])
 
