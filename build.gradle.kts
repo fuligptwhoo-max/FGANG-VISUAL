@@ -49,6 +49,8 @@ neoForge {
         }
     }
 
+    disableRecompilation = false
+
     addModdingDependenciesTo(sourceSets["main"])
 
     mods {
