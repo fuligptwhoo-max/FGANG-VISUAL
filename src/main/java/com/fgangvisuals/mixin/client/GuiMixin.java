@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Gui.class)
 public class GuiMixin {
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    private void onRenderCrosshair(GuiGraphics graphics, net.minecraft.client.renderer.RenderTarget renderTarget, CallbackInfo ci) {
+    private void onRenderCrosshair(GuiGraphics graphics, CallbackInfo ci) {
         if (Config.CROSSHAIR_ENABLED.get()) {
             ci.cancel();
         }

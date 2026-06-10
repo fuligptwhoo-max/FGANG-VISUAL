@@ -10,8 +10,7 @@
     "client.LevelRendererMixin",
     "client.ParticleEngineMixin",
     "client.EntityRenderDispatcherMixin",
-    "entity.EntityMixin",
-    "entity.LivingEntityMixin"
+    "entity.EntityMixin"
   ],
   "client": [],
   "injectors": {

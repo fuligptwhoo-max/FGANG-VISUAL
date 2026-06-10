@@ -72,10 +72,10 @@ public class RenderUtils {
     public static void drawItemWithDurability(GuiGraphics g, int x, int y, net.minecraft.world.item.ItemStack stack, float scale) {
         if (stack.isEmpty()) return;
         int size = (int) (16 * scale);
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         g.renderItem(stack, (int) (x / scale), (int) (y / scale));
-        g.pose().popPose();
+        g.pose().popMatrix();
 
         if (stack.isDamageableItem()) {
             int max = stack.getMaxDamage();

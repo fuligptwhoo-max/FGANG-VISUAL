@@ -21,8 +21,8 @@ public class Coordinates {
         int by = Config.COORDS_Y.get();
         int c = Config.COORDS_COLOR.get();
 
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
 
@@ -39,7 +39,7 @@ public class Coordinates {
         }
         if (Config.COORDS_BIOME.get() && mc.level != null) {
             var biome = mc.level.getBiome(mc.player.blockPosition());
-            lines.add(biome.unwrapKey().map(k -> k.location().getPath()).orElse("?"));
+            lines.add(biome.unwrapKey().map(k -> k.registry().getPath()).orElse("?"));
         }
 
         int mw = 0;
@@ -51,6 +51,6 @@ public class Coordinates {
         for (int i = 0; i < lines.size(); i++) {
             g.drawString(mc.font, lines.get(i), x + 4, y + 4 + i * 12, c, true);
         }
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 }

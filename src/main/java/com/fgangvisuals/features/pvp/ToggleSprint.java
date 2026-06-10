@@ -25,7 +25,7 @@ public class ToggleSprint {
                 sprinting = !sprinting;
             }
             sprintKeyWasDown = sprintDown;
-            if (sprinting && mc.player.input.forwardImpulse > 0 && !mc.player.isSprinting()) {
+            if (sprinting && mc.player.input.moveVector().y > 0 && !mc.player.isSprinting()) {
                 mc.player.setSprinting(true);
             }
         }

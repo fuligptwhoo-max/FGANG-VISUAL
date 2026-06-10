@@ -4,7 +4,7 @@ import com.fgangvisuals.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.tick.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -85,7 +85,7 @@ public class CrosshairManager {
 
     public void render(GuiGraphics g) {
         if (!Config.CROSSHAIR_ENABLED.get()) return;
-        if (mc.options.renderDebug) return;
+        if (mc.getDebugOverlay().showDebugScreen()) return;
 
         int sw = mc.getWindow().getGuiScaledWidth();
         int sh = mc.getWindow().getGuiScaledHeight();
@@ -111,9 +111,9 @@ public class CrosshairManager {
         int y = (int) (cy - h / 2f);
 
         RenderSystem.enableBlend();
-        g.pose().pushPose();
-        g.pose().translate(cx, cy, 0);
-        g.pose().mulPose(new org.joml.Quaternionf().fromAxisAngleDeg(new org.joml.Vector3f(0, 0, 1), (float) Math.toDegrees(rot)));
+        g.pose().pushMatrix();
+        g.pose().translate(cx, cy);
+        g.pose().rotate(rot);
         g.pose().translate(-cx, -cy);
 
         float r = ((color >> 16) & 0xFF) / 255f;
@@ -123,7 +123,7 @@ public class CrosshairManager {
         g.blit(customTexture, x, y, 0, 0, w, h, w, h);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        g.pose().popPose();
+        g.pose().popMatrix();
         RenderSystem.disableBlend();
     }
 
@@ -137,9 +137,9 @@ public class CrosshairManager {
         boolean dot = Config.CROSSHAIR_DOT.get();
         boolean outlineEnabled = Config.CROSSHAIR_OUTLINE.get();
 
-        g.pose().pushPose();
-        g.pose().translate(cx, cy, 0);
-        g.pose().mulPose(new org.joml.Quaternionf().fromAxisAngleDeg(new org.joml.Vector3f(0, 0, 1), (float) Math.toDegrees(rot)));
+        g.pose().pushMatrix();
+        g.pose().translate(cx, cy);
+        g.pose().rotate(rot);
         g.pose().translate(-cx, -cy);
 
         switch (style) {
@@ -155,7 +155,7 @@ public class CrosshairManager {
             drawDot(g, cx, cy, (int) (1.5f * scale), c, outlineEnabled, outline);
         }
 
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 
     private void drawStandardCross(GuiGraphics g, float cx, float cy, float gap, float len, float thick, int color, boolean outline, int outColor) {

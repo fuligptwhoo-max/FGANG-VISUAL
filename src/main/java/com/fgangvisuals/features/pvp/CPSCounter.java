@@ -35,8 +35,8 @@ public class CPSCounter {
         int by = Config.CPS_Y.get();
         int c = Config.CPS_COLOR.get();
 
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
 
@@ -54,7 +54,7 @@ public class CPSCounter {
             g.drawString(mc.font, l, x + 4, y + 4, c, true);
             g.drawString(mc.font, r, x + 4, y + 16, c, true);
         }
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 
     private void cleanup() {

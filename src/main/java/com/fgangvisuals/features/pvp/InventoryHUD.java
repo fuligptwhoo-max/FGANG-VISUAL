@@ -21,8 +21,8 @@ public class InventoryHUD {
         int bx = Config.INV_HUD_X.get();
         int by = Config.INV_HUD_Y.get();
 
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int slots = 9;
@@ -52,6 +52,6 @@ public class InventoryHUD {
                 if (!stack.isEmpty()) g.renderItem(stack, sx + 1, ay + 1);
             }
         }
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 }

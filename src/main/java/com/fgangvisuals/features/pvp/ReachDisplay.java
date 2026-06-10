@@ -35,8 +35,8 @@ public class ReachDisplay {
         int c = Config.REACH_COLOR.get();
         int dec = Config.REACH_DECIMALS.get();
 
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         String fmt = "%." + dec + "f blocks";
@@ -44,6 +44,6 @@ public class ReachDisplay {
         int w = mc.font.width(t) + 8;
         if (Config.REACH_BACKGROUND.get()) RenderUtils.drawMinimalBackground(g, x, y, w, 14, 0.5f);
         g.drawString(mc.font, t, x + 4, y + 3, c, true);
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 }

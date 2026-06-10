@@ -20,13 +20,15 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.minecraft.client.InputConstants;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.tick.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 
@@ -44,7 +46,6 @@ public class FGANGVisuals {
 
     // PVP
     public ArmorHUD armorHUD;
-    public PotionHUD potionHUD;
     public KeyStrokes keyStrokes;
     public CustomCrosshair customCrosshair;
     public HitColor hitColor;
@@ -60,7 +61,6 @@ public class FGANGVisuals {
     public TimeDisplay timeDisplay;
     public SessionInfo sessionInfo;
     public MemoryDisplay memoryDisplay;
-    public TNTTimer tntTimer;
     public PotCounter potCounter;
     public WTapIndicator wTapIndicator;
 
@@ -72,7 +72,6 @@ public class FGANGVisuals {
     public FullBright fullBright;
     public NoHurtCam noHurtCam;
     public ViewBobbing viewBobbing;
-    public BlockOverlay blockOverlay;
     public Zoom zoom;
     public Freelook freelook;
     public MotionBlur motionBlur;
@@ -81,7 +80,6 @@ public class FGANGVisuals {
     public EnvironmentEditor environmentEditor;
     public ScreenEffects screenEffects;
     public HitboxChunkBorders hitboxChunkBorders;
-    public HealthBarESP healthBarESP;
     public ScoreboardEditor scoreboardEditor;
     public ChatEditor chatEditor;
 
@@ -130,8 +128,8 @@ public class FGANGVisuals {
     }
 
     private void registerKeybinds(RegisterKeyMappingsEvent event) {
-        clickGuiKey = new KeyMapping("key.fgangvisuals.clickgui", GLFW.GLFW_KEY_RIGHT_SHIFT, "key.categories.fgangvisuals");
-        hudEditorKey = new KeyMapping("key.fgangvisuals.hudeditor", GLFW.GLFW_KEY_UNKNOWN, "key.categories.fgangvisuals");
+        clickGuiKey = new KeyMapping("key.fgangvisuals.clickgui", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, KeyMapping.Category.MISC);
+        hudEditorKey = new KeyMapping("key.fgangvisuals.hudeditor", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KeyMapping.Category.MISC);
         event.register(clickGuiKey);
         event.register(hudEditorKey);
         if (zoom != null) zoom.registerKey(event);
@@ -141,7 +139,6 @@ public class FGANGVisuals {
     private void initFeatures() {
         // PVP
         armorHUD = new ArmorHUD();
-        potionHUD = new PotionHUD();
         keyStrokes = new KeyStrokes();
         customCrosshair = new CustomCrosshair();
         hitColor = new HitColor();
@@ -157,7 +154,6 @@ public class FGANGVisuals {
         timeDisplay = new TimeDisplay();
         sessionInfo = new SessionInfo();
         memoryDisplay = new MemoryDisplay();
-        tntTimer = new TNTTimer();
         potCounter = new PotCounter();
         wTapIndicator = new WTapIndicator();
 
@@ -169,7 +165,6 @@ public class FGANGVisuals {
         fullBright = new FullBright();
         noHurtCam = new NoHurtCam();
         viewBobbing = new ViewBobbing();
-        blockOverlay = new BlockOverlay();
         zoom = new Zoom();
         freelook = new Freelook();
         motionBlur = new MotionBlur();
@@ -178,7 +173,6 @@ public class FGANGVisuals {
         environmentEditor = new EnvironmentEditor();
         screenEffects = new ScreenEffects();
         hitboxChunkBorders = new HitboxChunkBorders();
-        healthBarESP = new HealthBarESP();
         scoreboardEditor = new ScoreboardEditor();
         chatEditor = new ChatEditor();
 
@@ -203,7 +197,6 @@ public class FGANGVisuals {
     private void registerFeatures() {
         // PVP
         NeoForge.EVENT_BUS.register(armorHUD);
-        NeoForge.EVENT_BUS.register(potionHUD);
         NeoForge.EVENT_BUS.register(keyStrokes);
         NeoForge.EVENT_BUS.register(customCrosshair);
         NeoForge.EVENT_BUS.register(hitColor);
@@ -219,7 +212,6 @@ public class FGANGVisuals {
         NeoForge.EVENT_BUS.register(timeDisplay);
         NeoForge.EVENT_BUS.register(sessionInfo);
         NeoForge.EVENT_BUS.register(memoryDisplay);
-        NeoForge.EVENT_BUS.register(tntTimer);
         NeoForge.EVENT_BUS.register(potCounter);
         NeoForge.EVENT_BUS.register(wTapIndicator);
 
@@ -231,7 +223,6 @@ public class FGANGVisuals {
         NeoForge.EVENT_BUS.register(fullBright);
         NeoForge.EVENT_BUS.register(noHurtCam);
         NeoForge.EVENT_BUS.register(viewBobbing);
-        NeoForge.EVENT_BUS.register(blockOverlay);
         NeoForge.EVENT_BUS.register(zoom);
         NeoForge.EVENT_BUS.register(freelook);
         NeoForge.EVENT_BUS.register(motionBlur);
@@ -240,7 +231,6 @@ public class FGANGVisuals {
         NeoForge.EVENT_BUS.register(environmentEditor);
         NeoForge.EVENT_BUS.register(screenEffects);
         NeoForge.EVENT_BUS.register(hitboxChunkBorders);
-        NeoForge.EVENT_BUS.register(healthBarESP);
         NeoForge.EVENT_BUS.register(scoreboardEditor);
         NeoForge.EVENT_BUS.register(chatEditor);
 
@@ -271,7 +261,7 @@ public class FGANGVisuals {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {

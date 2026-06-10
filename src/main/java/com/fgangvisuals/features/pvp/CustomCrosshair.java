@@ -13,7 +13,7 @@ public class CustomCrosshair {
     @SubscribeEvent
     public void onRender(RenderGuiEvent.Post event) {
         if (!Config.CROSSHAIR_ENABLED.get() || mc.player == null) return;
-        if (mc.options.renderDebug) return;
+        if (mc.getDebugOverlay().showDebugScreen()) return;
 
         FGANGVisuals.getInstance().crosshairManager.render(event.getGuiGraphics());
     }

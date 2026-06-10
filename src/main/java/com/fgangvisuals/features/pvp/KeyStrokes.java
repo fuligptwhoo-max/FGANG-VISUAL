@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.minecraft.client.InputConstants;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyStrokes {
@@ -32,8 +33,8 @@ public class KeyStrokes {
         int c = Config.KEYSTROKES_COLOR.get();
         int pc = Config.KEYSTROKES_PRESSED_COLOR.get();
 
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int s = 24;
@@ -70,12 +71,12 @@ public class KeyStrokes {
             int ty = k.ry + k.rh / 2 - 4;
             g.drawString(mc.font, lbl, tx, ty, tc, false);
         }
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 
     private boolean isPressed(int code) {
         if (code == -100) return mc.mouseHandler.isLeftPressed();
         if (code == -99) return mc.mouseHandler.isRightPressed();
-        return GLFW.glfwGetKey(mc.getWindow().getWindow(), code) == GLFW.GLFW_PRESS;
+        return InputConstants.isKeyDown(mc.getWindow(), code);
     }
 }

@@ -3,7 +3,7 @@ package com.fgangvisuals.features.optimizations;
 import com.fgangvisuals.config.Config;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.tick.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 public class ParticleOptimizer {
     private final Minecraft mc = Minecraft.getInstance();

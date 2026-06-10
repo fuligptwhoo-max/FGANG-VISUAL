@@ -4,7 +4,7 @@ import com.fgangvisuals.config.Config;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.event.tick.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 public class EnvironmentEditor {
     private final Minecraft mc = Minecraft.getInstance();

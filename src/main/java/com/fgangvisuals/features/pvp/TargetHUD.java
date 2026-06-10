@@ -38,8 +38,8 @@ public class TargetHUD {
         int by = Config.TARGET_HUD_Y.get();
         int c = Config.TARGET_HUD_COLOR.get();
 
-        g.pose().pushPose();
-        g.pose().scale(scale, scale, 1f);
+        g.pose().pushMatrix();
+        g.pose().scale((float) scale, (float) scale);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
 
@@ -73,7 +73,7 @@ public class TargetHUD {
 
         if (Config.TARGET_HUD_SHOW_ARMOR.get() && target instanceof Player p) {
             for (int i = 0; i < 4; i++) {
-                ItemStack stack = p.getInventory().getArmor(3 - i);
+                ItemStack stack = p.getInventory().getItem(36 + (3 - i));
                 if (!stack.isEmpty()) {
                     g.renderItem(stack, x + 4 + i * 18, y + 30);
                 }
@@ -89,7 +89,7 @@ public class TargetHUD {
             }
         }
 
-        g.pose().popPose();
+        g.pose().popMatrix();
     }
 
     private String formatTime(int ticks) {

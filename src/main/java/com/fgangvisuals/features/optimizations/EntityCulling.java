@@ -7,7 +7,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
-import net.neoforged.neoforge.event.tick.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class EntityCulling {
     }
 
     @SubscribeEvent
-    public void onPreRender(RenderLivingEvent.Pre<?, ?> event) {
+    public void onPreRender(RenderLivingEvent.Pre<?, ?, ?> event) {
         if (!Config.ENTITY_CULLING_ENABLED.get() || mc.player == null) return;
         Entity e = event.getEntity();
         if (e == mc.player) return;
