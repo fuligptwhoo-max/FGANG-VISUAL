@@ -1,5 +1,3 @@
-import net.neoforged.moddevgradle.dsl.ModdingVersionSettings
-
 plugins {
     id("java-library")
     id("eclipse")
@@ -19,10 +17,7 @@ base.archivesName = "${property("mod_id")}"
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
-    enable(Action<ModdingVersionSettings> {
-        it.version = property("neo_version") as String
-        it.setDisableRecompilation(false)
-    })
+    version = property("neo_version") as String
 
     validateAccessTransformers = true
 
@@ -75,6 +70,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.34")
     implementation("io.github.llamalad7:mixinextras-common:0.5.0-beta.5")
     annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.5")
+    compileOnly(fileTree("build/moddev/artifacts").include("**/*.jar"))
 }
 
 sourceSets.main.get().resources {
