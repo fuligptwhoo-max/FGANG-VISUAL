@@ -104,7 +104,7 @@ public class FGANGVisuals {
     public FGANGVisuals(IEventBus modEventBus, ModContainer modContainer) {
         INSTANCE = this;
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.SPEC);
-        modContainer.registerExtensionPoint(IConfigScreenFactory.class, IConfigScreenFactory.
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class,
             (minecraft, parent) -> new ConfigScreen(parent));
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
