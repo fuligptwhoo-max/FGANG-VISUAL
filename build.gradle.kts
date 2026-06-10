@@ -1,3 +1,5 @@
+import net.neoforged.moddevgradle.dsl.ModdingVersionSettings
+
 plugins {
     id("java-library")
     id("eclipse")
@@ -17,10 +19,10 @@ base.archivesName = "${property("mod_id")}"
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
-    enable {
-        version = property("neo_version") as String
-        setDisableRecompilation(false)
-    }
+    enable(Action<ModdingVersionSettings> {
+        it.version = property("neo_version") as String
+        it.setDisableRecompilation(false)
+    })
 
     validateAccessTransformers = true
 
