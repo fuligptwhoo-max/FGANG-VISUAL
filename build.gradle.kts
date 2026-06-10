@@ -19,7 +19,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     enable {
         version = property("neo_version") as String
-        disableRecompilation = false
+        setDisableRecompilation(false)
     }
 
     validateAccessTransformers = true
