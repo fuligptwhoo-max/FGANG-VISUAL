@@ -102,12 +102,12 @@ tasks.withType<ProcessResources>().configureEach {
     )
 
     inputs.properties(
-        replaceProperties.associateWith { property(it) as String }
+        replaceProperties.associateWith { project.property(it) as String }
     )
 
     filesMatching("META-INF/neoforge.mods.toml") {
         expand(
-            replaceProperties.associateWith { property(it) as String }
+            replaceProperties.associateWith { project.property(it) as String }
         )
     }
 }
