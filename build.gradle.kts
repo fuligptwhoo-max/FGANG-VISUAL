@@ -70,7 +70,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.34")
     implementation("io.github.llamalad7:mixinextras-common:0.5.0-beta.5")
     annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.5")
-    compileOnly(fileTree("build/moddev/artifacts").include("**/*.jar"))
+    compileOnly(tasks.named("createMinecraftArtifacts").map { it.outputs.files })
 }
 
 sourceSets.main.get().resources {
