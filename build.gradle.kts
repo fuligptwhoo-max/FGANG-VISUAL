@@ -56,12 +56,6 @@ neoForge {
     }
 }
 
-configurations {
-    runtimeClasspath {
-        extendsFrom(configurations["localRuntime"])
-    }
-}
-
 repositories {
     mavenCentral()
     maven("https://maven.neoforged.net/releases")
