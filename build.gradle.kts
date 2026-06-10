@@ -49,6 +49,8 @@ neoForge {
         }
     }
 
+    addModdingDependenciesTo(sourceSets["main"])
+
     mods {
         create("fgangvisuals") {
             sourceSet(sourceSets["main"])
