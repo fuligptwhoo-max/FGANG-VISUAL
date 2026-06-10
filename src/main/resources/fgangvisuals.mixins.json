@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.fgangvisuals.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "client.MinecraftMixin",
+    "client.GameRendererMixin",
+    "client.GuiMixin",
+    "client.LevelRendererMixin",
+    "client.ParticleEngineMixin",
+    "client.EntityRenderDispatcherMixin",
+    "entity.EntityMixin",
+    "entity.LivingEntityMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

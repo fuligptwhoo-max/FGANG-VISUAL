@@ -1,0 +1,5 @@
+total 1
+drwxr-xr-x 1 ftful 197609   0 Jun 10 22:53 ./
+drwxr-xr-x 1 ftful 197609   0 Jun 10 22:53 ../
+-rw-r--r-- 1 ftful 197609 251 Jun 10 12:51 gradle-wrapper.properties
+EXIT CODE: 0

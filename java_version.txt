@@ -1,0 +1,2 @@
+bash: java: command not found
+EXIT CODE: 127
