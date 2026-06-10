@@ -86,29 +86,25 @@ tasks.withType<Javadoc>().configureEach {
 }
 
 tasks.withType<ProcessResources>().configureEach {
-    val replaceProperties = listOf(
-        "minecraft_version",
-        "minecraft_version_range",
-        "neo_version",
-        "neo_version_range",
-        "loader_version_range",
-        "mod_id",
-        "mod_name",
-        "mod_license",
-        "mod_version",
-        "mod_group_id",
-        "mod_authors",
-        "mod_description"
+    val replaceProperties = mapOf(
+        "minecraft_version" to (project.findProperty("minecraft_version") as? String ?: ""),
+        "minecraft_version_range" to (project.findProperty("minecraft_version_range") as? String ?: ""),
+        "neo_version" to (project.findProperty("neo_version") as? String ?: ""),
+        "neo_version_range" to (project.findProperty("neo_version_range") as? String ?: ""),
+        "loader_version_range" to (project.findProperty("loader_version_range") as? String ?: ""),
+        "mod_id" to (project.findProperty("mod_id") as? String ?: ""),
+        "mod_name" to (project.findProperty("mod_name") as? String ?: ""),
+        "mod_license" to (project.findProperty("mod_license") as? String ?: ""),
+        "mod_version" to (project.findProperty("mod_version") as? String ?: ""),
+        "mod_group_id" to (project.findProperty("mod_group_id") as? String ?: ""),
+        "mod_authors" to (project.findProperty("mod_authors") as? String ?: ""),
+        "mod_description" to (project.findProperty("mod_description") as? String ?: "")
     )
 
-    inputs.properties(
-        replaceProperties.associateWith { project.property(it) as String }
-    )
+    inputs.properties(replaceProperties)
 
     filesMatching("META-INF/neoforge.mods.toml") {
-        expand(
-            replaceProperties.associateWith { project.property(it) as String }
-        )
+        expand(replaceProperties)
     }
 }
 
