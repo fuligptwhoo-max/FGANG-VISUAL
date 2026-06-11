@@ -244,7 +244,6 @@ public class FGANGVisuals {
         NeoForge.EVENT_BUS.register(memoryOptimizer);
 
         // GUI
-        NeoForge.EVENT_BUS.register(clickGUI);
         NeoForge.EVENT_BUS.register(moduleList);
         NeoForge.EVENT_BUS.register(watermark);
         NeoForge.EVENT_BUS.register(notifications);
