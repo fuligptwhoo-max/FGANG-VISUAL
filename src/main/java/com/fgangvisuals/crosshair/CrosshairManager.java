@@ -5,20 +5,16 @@ import com.fgangvisuals.utils.RenderUtils;
 import com.fgangvisuals.config.Config;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.GameRenderer;
-import org.joml.Matrix4f;
+import net.minecraft.resources.ResourceLocation;
+import org.joml.Quaternionf;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -26,7 +22,7 @@ import java.nio.file.StandardCopyOption;
 public class CrosshairManager {
     private final Minecraft mc = Minecraft.getInstance();
     private final Path crosshairDir;
-    private int customTextureId = -1;
+    private ResourceLocation customTexture = null;
     private DynamicTexture dynamicTexture = null;
     private String loadedFileName = "";
 
@@ -34,7 +30,7 @@ public class CrosshairManager {
         crosshairDir = new File("config/" + FGANGVisuals.MOD_ID + "/crosshairs").toPath();
         try {
             Files.createDirectories(crosshairDir);
-        } catch (IOException e) {
+        } catch (Exception e) {
             FGANGVisuals.LOGGER.error("Failed to create crosshair directory", e);
         }
         loadDefault();
@@ -73,7 +69,8 @@ public class CrosshairManager {
             }
             NativeImage image = NativeImage.read(new FileInputStream(file));
             dynamicTexture = new DynamicTexture(image);
-            customTextureId = dynamicTexture.getId();
+            customTexture = ResourceLocation.fromNamespaceAndPath(FGANGVisuals.MOD_ID, "crosshair/" + file.getName().toLowerCase().replaceAll("[^a-z0-9_.-]", ""));
+            mc.getTextureManager().register(customTexture, dynamicTexture);
             loadedFileName = file.getName();
             FGANGVisuals.LOGGER.info("Loaded crosshair: " + file.getName());
         } catch (Exception e) {
@@ -84,7 +81,7 @@ public class CrosshairManager {
 
     public void render(GuiGraphics g) {
         if (!Config.CROSSHAIR_ENABLED.get()) return;
-        if (mc.getDebugOverlay().showDebugScreen()) return;
+        if (mc.options.renderDebug) return;
 
         int sw = mc.getWindow().getGuiScaledWidth();
         int sh = mc.getWindow().getGuiScaledHeight();
@@ -95,7 +92,7 @@ public class CrosshairManager {
         float opacity = Config.CROSSHAIR_OPACITY.get().floatValue();
         float rot = (float) Math.toRadians(Config.CROSSHAIR_ROTATION.get());
 
-        if (Config.CROSSHAIR_CUSTOM_IMAGE.get() && customTextureId != -1) {
+        if (Config.CROSSHAIR_CUSTOM_IMAGE.get() && customTexture != null) {
             renderCustomImage(g, cx, cy, size, color, opacity, rot);
         } else {
             renderBuiltIn(g, cx, cy, size, color, opacity, rot);
@@ -106,43 +103,23 @@ public class CrosshairManager {
         int baseSize = 16;
         int w = (int) (baseSize * scale);
         int h = w;
-        float x1 = cx - w / 2f, y1 = cy - h / 2f;
-        float x2 = cx + w / 2f, y2 = cy + h / 2f;
-
-        float cos = (float) Math.cos(rot), sin = (float) Math.sin(rot);
-        float[] xs = new float[4];
-        float[] ys = new float[4];
-        xs[0] = cx + (x1 - cx) * cos - (y1 - cy) * sin;
-        ys[0] = cy + (x1 - cx) * sin + (y1 - cy) * cos;
-        xs[1] = cx + (x2 - cx) * cos - (y1 - cy) * sin;
-        ys[1] = cy + (x2 - cx) * sin + (y1 - cy) * cos;
-        xs[2] = cx + (x2 - cx) * cos - (y2 - cy) * sin;
-        ys[2] = cy + (x2 - cx) * sin + (y2 - cy) * cos;
-        xs[3] = cx + (x1 - cx) * cos - (y2 - cy) * sin;
-        ys[3] = cy + (x1 - cx) * sin + (y2 - cy) * cos;
+        int x = (int) (cx - w / 2f);
+        int y = (int) (cy - h / 2f);
 
         RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShaderTexture(0, customTextureId);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        g.pose().pushPose();
+        g.pose().translate(cx, cy, 0);
+        g.pose().mulPose(new Quaternionf().rotateZ(rot));
+        g.pose().translate(-cx, -cy, 0);
 
         float r = ((color >> 16) & 0xFF) / 255f;
         float gr = ((color >> 8) & 0xFF) / 255f;
         float b = (color & 0xFF) / 255f;
         RenderSystem.setShaderColor(r, gr, b, alpha);
-
-        Tesselator t = Tesselator.getInstance();
-        BufferBuilder builder = t.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        Matrix4f mat = new Matrix4f();
-
-        builder.addVertex(mat, xs[0], ys[0], 0).setUv(0, 0);
-        builder.addVertex(mat, xs[1], ys[1], 0).setUv(1, 0);
-        builder.addVertex(mat, xs[2], ys[2], 0).setUv(1, 1);
-        builder.addVertex(mat, xs[3], ys[3], 0).setUv(0, 1);
-
-        BufferUploader.drawWithShader(builder.buildOrThrow());
-
+        g.blit(customTexture, x, y, 0, 0, w, h, w, h);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+
+        g.pose().popPose();
         RenderSystem.disableBlend();
     }
 
@@ -156,10 +133,10 @@ public class CrosshairManager {
         boolean dot = Config.CROSSHAIR_DOT.get();
         boolean outlineEnabled = Config.CROSSHAIR_OUTLINE.get();
 
-        g.pose().pushMatrix();
-        g.pose().translate(cx, cy);
-        g.pose().rotate(rot);
-        g.pose().translate(-cx, -cy);
+        g.pose().pushPose();
+        g.pose().translate(cx, cy, 0);
+        g.pose().mulPose(new Quaternionf().rotateZ(rot));
+        g.pose().translate(-cx, -cy, 0);
 
         switch (style) {
             case 1 -> drawDot(g, cx, cy, (int) (3 * scale), c, outlineEnabled, outline);
@@ -174,7 +151,7 @@ public class CrosshairManager {
             drawDot(g, cx, cy, (int) (1.5f * scale), c, outlineEnabled, outline);
         }
 
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 
     private void drawStandardCross(GuiGraphics g, float cx, float cy, float gap, float len, float thick, int color, boolean outline, int outColor) {
@@ -224,7 +201,6 @@ public class CrosshairManager {
     private void drawArrow(GuiGraphics g, float cx, float cy, float gap, float len, float thick, int color, boolean outline, int outColor) {
         int t = (int) Math.max(1, thick);
         for (int i = 0; i < t; i++) {
-            // 4 arrows pointing in
             drawRawLine(g, cx - gap - len, cy - gap - len, cx - gap, cy - gap, color);
             drawRawLine(g, cx + gap + len, cy - gap - len, cx + gap, cy - gap, color);
             drawRawLine(g, cx - gap - len, cy + gap + len, cx - gap, cy + gap, color);
@@ -236,16 +212,12 @@ public class CrosshairManager {
         int t = (int) Math.max(1, thick);
         float g2 = gap + len;
         for (int i = 0; i < t; i++) {
-            // Top-left
             drawRawLine(g, cx - g2, cy - gap - i, cx - gap - i, cy - gap - i, color);
             drawRawLine(g, cx - gap - i, cy - g2, cx - gap - i, cy - gap - i, color);
-            // Top-right
             drawRawLine(g, cx + gap + i, cy - gap - i, cx + g2, cy - gap - i, color);
             drawRawLine(g, cx + gap + i, cy - g2, cx + gap + i, cy - gap - i, color);
-            // Bottom-left
             drawRawLine(g, cx - g2, cy + gap + i, cx - gap - i, cy + gap + i, color);
             drawRawLine(g, cx - gap - i, cy + gap + i, cx - gap - i, cy + g2, color);
-            // Bottom-right
             drawRawLine(g, cx + gap + i, cy + gap + i, cx + g2, cy + gap + i, color);
             drawRawLine(g, cx + gap + i, cy + gap + i, cx + gap + i, cy + g2, color);
         }
@@ -267,6 +239,6 @@ public class CrosshairManager {
     }
 
     public boolean hasCustomImage() {
-        return customTextureId != -1;
+        return customTexture != null;
     }
 }
