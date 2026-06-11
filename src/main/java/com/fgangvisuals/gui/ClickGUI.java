@@ -80,13 +80,13 @@ public class ClickGUI extends Screen {
         g.drawString(mc.font, "§l" + CATEGORIES[selectedPanel], contentX + 8, contentY + 8, ACCENT, true);
         g.fill(contentX + 8, contentY + 22, contentX + contentW - 8, contentY + 23, BORDER);
 
-        renderFeatures(g, selectedPanel, contentX + 8, contentY + 28, contentW - 16, mx, my);
+        renderFeatures(g, selectedPanel, contentX + 8, contentY + 28, contentW - 16, contentH, mx, my);
 
         // Footer
         g.drawString(mc.font, "§7ESC to close", 10, this.height - 14, 0x888888, false);
     }
 
-    private void renderFeatures(GuiGraphics g, int cat, int x, int y, int w, int mx, int my) {
+    private void renderFeatures(GuiGraphics g, int cat, int x, int y, int w, int contentH, int mx, int my) {
         String[][] features = {
             // PVP
             {"Armor HUD", "Potion HUD", "KeyStrokes", "Crosshair", "Hit Color", "Toggle Sprint",

@@ -81,7 +81,7 @@ public class CrosshairManager {
 
     public void render(GuiGraphics g) {
         if (!Config.CROSSHAIR_ENABLED.get()) return;
-        if (mc.options.renderDebug) return;
+        if (mc.getDebugOverlay().showDebugScreen()) return;
 
         int sw = mc.getWindow().getGuiScaledWidth();
         int sh = mc.getWindow().getGuiScaledHeight();

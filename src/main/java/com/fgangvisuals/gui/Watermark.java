@@ -20,9 +20,9 @@ public class Watermark {
         int c = Config.WATERMARK_COLOR.get();
         String text = Config.WATERMARK_TEXT.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         g.drawString(mc.font, text, (int)(bx/scale), (int)(by/scale), c, true);
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

@@ -13,7 +13,7 @@ public class ParticleOptimizer {
     public void onTick(ClientTickEvent.Post event) {
         if (!Config.PARTICLE_OPTIMIZER.get() || mc.level == null) return;
         if (mc.level.getGameTime() % 20 == 0) {
-            try { currentCount = mc.particleEngine.countParticles(); } catch (Exception ignored) {}
+            try { currentCount = Integer.parseInt(mc.particleEngine.countParticles().replaceAll("[^0-9]", "")); } catch (Exception ignored) { currentCount = 0; }
         }
         int max = Config.MAX_PARTICLES.get();
         if (currentCount > max * 0.95) {

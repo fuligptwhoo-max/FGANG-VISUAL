@@ -29,7 +29,7 @@ public class EntityCulling {
     }
 
     @SubscribeEvent
-    public void onPreRender(RenderLivingEvent.Pre<?, ?, ?> event) {
+    public void onPreRender(RenderLivingEvent.Pre<?, ?> event) {
         if (!Config.ENTITY_CULLING_ENABLED.get() || mc.player == null) return;
         Entity e = event.getEntity();
         if (e == mc.player) return;

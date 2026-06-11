@@ -38,8 +38,8 @@ public class TargetHUD {
         int by = Config.TARGET_HUD_Y.get();
         int c = Config.TARGET_HUD_COLOR.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
 
@@ -89,7 +89,7 @@ public class TargetHUD {
             }
         }
 
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 
     private String formatTime(int ticks) {

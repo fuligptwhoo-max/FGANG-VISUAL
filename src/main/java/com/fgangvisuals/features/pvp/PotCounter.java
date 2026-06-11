@@ -32,14 +32,14 @@ public class PotCounter {
         int by = Config.POT_COUNTER_Y.get();
         int c = Config.POT_COUNTER_COLOR.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         String t = count + " pots";
         int w = mc.font.width(t) + 8;
         RenderUtils.drawMinimalBackground(g, x, y, w, 14, 0.5f);
         g.drawString(mc.font, t, x + 4, y + 3, c, true);
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

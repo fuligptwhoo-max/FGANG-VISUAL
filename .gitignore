@@ -1,0 +1,26 @@
+# Gradle
+.gradle/
+build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+bin/
+
+# Run directories (NeoForge MDG creates these for testing)
+run/
+run-client/
+run-server/
+run-data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / crashes
+hs_err_pid*
+replay_pid*

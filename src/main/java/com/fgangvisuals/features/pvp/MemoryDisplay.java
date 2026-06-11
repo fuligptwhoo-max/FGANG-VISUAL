@@ -24,13 +24,13 @@ public class MemoryDisplay {
         long max = Runtime.getRuntime().maxMemory();
         String t = String.format("%.1f/%.1f MB", used / 1048576f, max / 1048576f);
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int w = mc.font.width(t) + 8;
         if (Config.MEMORY_DISPLAY_BACKGROUND.get()) RenderUtils.drawMinimalBackground(g, x, y, w, 14, 0.5f);
         g.drawString(mc.font, t, x + 4, y + 3, c, true);
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

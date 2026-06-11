@@ -1,2 +1,0 @@
-bash: ./gradlew: No such file or directory
-EXIT CODE: 127

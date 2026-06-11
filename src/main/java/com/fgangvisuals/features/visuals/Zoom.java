@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW;
 public class Zoom {
     private final Minecraft mc = Minecraft.getInstance();
     public static KeyMapping zoomKey;
-    private float currentFov = 0;
+    private int currentFov = 0;
     private boolean wasZooming = false;
 
     public void registerKey(RegisterKeyMappingsEvent event) {
@@ -31,15 +31,15 @@ public class Zoom {
         if (zooming) {
             float target = Config.ZOOM_FOV.get().floatValue();
             if (Config.ZOOM_SMOOTH.get()) {
-                float current = mc.options.fov().get();
-                mc.options.fov().set(current + (target - current) * 0.1f);
+                int current = mc.options.fov().get();
+                mc.options.fov().set((int)(current + (target - current) * 0.1f));
             } else {
-                mc.options.fov().set(target);
+                mc.options.fov().set((int)target);
             }
         } else if (wasZooming) {
             if (Config.ZOOM_SMOOTH.get()) {
-                float current = mc.options.fov().get();
-                mc.options.fov().set(current + (currentFov - current) * 0.1f);
+                int current = mc.options.fov().get();
+                mc.options.fov().set((int)(current + (currentFov - current) * 0.1f));
             } else {
                 mc.options.fov().set(currentFov);
             }

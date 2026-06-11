@@ -27,13 +27,13 @@ public class TimeDisplay {
         String fmt = Config.TIME_24H.get() ? "HH:mm" : "hh:mm a";
         String t = now.format(DateTimeFormatter.ofPattern(fmt));
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int w = mc.font.width(t) + 8;
         if (Config.TIME_BACKGROUND.get()) RenderUtils.drawMinimalBackground(g, x, y, w, 14, 0.5f);
         g.drawString(mc.font, t, x + 4, y + 3, c, true);
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

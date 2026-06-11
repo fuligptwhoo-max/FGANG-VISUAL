@@ -21,8 +21,8 @@ public class Coordinates {
         int by = Config.COORDS_Y.get();
         int c = Config.COORDS_COLOR.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
 
@@ -51,6 +51,6 @@ public class Coordinates {
         for (int i = 0; i < lines.size(); i++) {
             g.drawString(mc.font, lines.get(i), x + 4, y + 4 + i * 12, c, true);
         }
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

@@ -31,14 +31,14 @@ public class WTapIndicator {
         int bx = Config.WTAP_X.get();
         int by = Config.WTAP_Y.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         String t = "W-TAP";
         int w = mc.font.width(t) + 8;
         RenderUtils.drawMinimalBackground(g, x, y, w, 14, 0.5f);
         g.drawString(mc.font, t, x + 4, y + 3, RenderUtils.YELLOW, true);
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

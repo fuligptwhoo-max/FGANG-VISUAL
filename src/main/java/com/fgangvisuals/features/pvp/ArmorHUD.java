@@ -23,8 +23,8 @@ public class ArmorHUD {
         boolean vert = Config.ARMOR_HUD_VERTICAL.get();
         int color = Config.ARMOR_HUD_COLOR.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (baseX / scale);
         int y = (int) (baseY / scale);
 
@@ -73,6 +73,6 @@ public class ArmorHUD {
                 g.drawString(mc.font, "—", sx + 6, sy + 6, 0x444444, false);
             }
         }
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

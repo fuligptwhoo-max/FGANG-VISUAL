@@ -28,8 +28,8 @@ public class ModuleList {
         int by = Config.ARRAYLIST_Y.get();
         int c = Config.ARRAYLIST_COLOR.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int h = 12;
@@ -49,7 +49,7 @@ public class ModuleList {
             }
             g.drawString(mc.font, m, x + 3, my + 2, color, true);
         }
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 
     private void updateModules() {

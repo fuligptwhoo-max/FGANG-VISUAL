@@ -35,8 +35,8 @@ public class Notifications {
         int bx = Config.NOTIFICATIONS_X.get();
         int by = Config.NOTIFICATIONS_Y.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int h = 16;
@@ -51,6 +51,6 @@ public class Notifications {
             g.fill(x, y + i * h, x + w, y + i * h + 1, border);
             g.drawString(mc.font, n.text, x + 4, y + i * h + 3, 0xFFFFFFFF, true);
         }
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

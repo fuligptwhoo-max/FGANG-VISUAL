@@ -25,14 +25,14 @@ public class FPSCounter {
             c = fps >= 120 ? RenderUtils.GREEN : fps >= 60 ? RenderUtils.WHITE : fps >= 30 ? RenderUtils.YELLOW : RenderUtils.RED;
         }
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         String t = fps + " FPS";
         int w = mc.font.width(t) + 8;
         if (Config.FPS_BACKGROUND.get()) RenderUtils.drawMinimalBackground(g, x, y, w, 14, 0.5f);
         g.drawString(mc.font, t, x + 4, y + 3, c, true);
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 }

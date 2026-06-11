@@ -17,8 +17,6 @@ public class HitboxChunkBorders {
         if (Config.HITBOX_ENABLED.get()) {
             mc.getEntityRenderDispatcher().setRenderHitBoxes(true);
         }
-        if (Config.CHUNK_BORDERS_ENABLED.get()) {
-            mc.debugRenderer.renderChunkBorder(mc.player);
-        }
+        // Chunk borders are toggled via F3+G in vanilla; no direct API in 1.21.1
     }
 }

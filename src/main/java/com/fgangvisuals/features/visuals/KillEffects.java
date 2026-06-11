@@ -55,7 +55,7 @@ public class KillEffects {
     private void blood(Vec3 p, double h) {
         ClientLevel l = mc.level; if (l == null) return;
         for (int i = 0; i < 25; i++)
-            l.addParticle(new DustParticleOptions(0xFFCC1919, 1.5f), p.x + (rand.nextDouble()-0.5)*0.5, p.y + rand.nextDouble()*h, p.z + (rand.nextDouble()-0.5)*0.5,
+            l.addParticle(new DustParticleOptions(new org.joml.Vector3f(0.8f, 0.098f, 0.098f), 1.5f), p.x + (rand.nextDouble()-0.5)*0.5, p.y + rand.nextDouble()*h, p.z + (rand.nextDouble()-0.5)*0.5,
                 (rand.nextDouble()-0.5)*0.3, rand.nextDouble()*0.2, (rand.nextDouble()-0.5)*0.3);
     }
 
@@ -64,11 +64,11 @@ public class KillEffects {
         int col = Config.KILL_EFFECT_COLOR.get();
         float r = ((col >> 16) & 0xFF) / 255f, g = ((col >> 8) & 0xFF) / 255f, b = (col & 0xFF) / 255f;
         for (int i = 0; i < 20; i++)
-            l.addParticle(new DustParticleOptions((0xFF << 24) | ((int)(r * 255) << 16) | ((int)(g * 255) << 8) | (int)(b * 255), 1.2f), p.x + (rand.nextDouble()-0.5)*0.8, p.y + rand.nextDouble()*h, p.z + (rand.nextDouble()-0.5)*0.8,
+            l.addParticle(new DustParticleOptions(new org.joml.Vector3f(r, g, b), 1.2f), p.x + (rand.nextDouble()-0.5)*0.8, p.y + rand.nextDouble()*h, p.z + (rand.nextDouble()-0.5)*0.8,
                 0, rand.nextDouble()*0.5 + 0.2, 0);
         for (int i = 0; i < 16; i++) {
             double a = Math.PI * 2 * i / 16;
-            l.addParticle(new DustParticleOptions(0xFF00EFFF, 1f), p.x, p.y + 0.1, p.z, Math.cos(a)*0.3, 0.1, Math.sin(a)*0.3);
+            l.addParticle(new DustParticleOptions(new org.joml.Vector3f(0.0f, 0.937f, 1.0f), 1f), p.x, p.y + 0.1, p.z, Math.cos(a)*0.3, 0.1, Math.sin(a)*0.3);
         }
     }
 }

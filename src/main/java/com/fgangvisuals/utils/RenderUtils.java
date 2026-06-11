@@ -72,10 +72,10 @@ public class RenderUtils {
     public static void drawItemWithDurability(GuiGraphics g, int x, int y, net.minecraft.world.item.ItemStack stack, float scale) {
         if (stack.isEmpty()) return;
         int size = (int) (16 * scale);
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         g.renderItem(stack, (int) (x / scale), (int) (y / scale));
-        g.pose().popMatrix();
+        g.pose().popPose();
 
         if (stack.isDamageableItem()) {
             int max = stack.getMaxDamage();
@@ -97,5 +97,9 @@ public class RenderUtils {
 
     public static void disableScissor() {
         RenderSystem.disableScissor();
+    }
+
+    public static float lerp(float current, float target, float factor) {
+        return current + (target - current) * factor;
     }
 }

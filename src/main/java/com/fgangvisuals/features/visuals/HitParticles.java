@@ -37,13 +37,13 @@ public class HitParticles {
             double vx = (rand.nextDouble() - 0.5) * 0.3;
             double vy = rand.nextDouble() * 0.3;
             double vz = (rand.nextDouble() - 0.5) * 0.3;
-            lvl.addParticle(new DustParticleOptions((0xFF << 24) | ((int)(r * 255) << 16) | ((int)(g * 255) << 8) | (int)(b * 255), size),
+            lvl.addParticle(new DustParticleOptions(new org.joml.Vector3f(r, g, b), size),
                 e.getX() + ox, e.getY() + oy, e.getZ() + oz, vx, vy, vz);
         }
 
         if (event.getNewDamage() > 5f) {
             for (int i = 0; i < 5; i++) {
-                lvl.addParticle(new DustParticleOptions(0xFFFFE54D, 1.2f),
+                lvl.addParticle(new DustParticleOptions(new org.joml.Vector3f(1.0f, 0.898f, 0.302f), 1.2f),
                     e.getX(), e.getY() + e.getBbHeight() * 0.5, e.getZ(),
                     (rand.nextDouble() - 0.5) * 0.2, 0.1, (rand.nextDouble() - 0.5) * 0.2);
             }

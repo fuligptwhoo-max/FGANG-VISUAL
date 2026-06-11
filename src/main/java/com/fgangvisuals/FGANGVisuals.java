@@ -128,8 +128,8 @@ public class FGANGVisuals {
     }
 
     private void registerKeybinds(RegisterKeyMappingsEvent event) {
-        clickGuiKey = new KeyMapping("key.fgangvisuals.clickgui", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, KeyMapping.Category.MISC);
-        hudEditorKey = new KeyMapping("key.fgangvisuals.hudeditor", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, KeyMapping.Category.MISC);
+        clickGuiKey = new KeyMapping("key.fgangvisuals.clickgui", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "key.categories.misc");
+        hudEditorKey = new KeyMapping("key.fgangvisuals.hudeditor", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.categories.misc");
         event.register(clickGuiKey);
         event.register(hudEditorKey);
         if (zoom != null) zoom.registerKey(event);

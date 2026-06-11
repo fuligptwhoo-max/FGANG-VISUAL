@@ -33,8 +33,8 @@ public class KeyStrokes {
         int c = Config.KEYSTROKES_COLOR.get();
         int pc = Config.KEYSTROKES_PRESSED_COLOR.get();
 
-        g.pose().pushMatrix();
-        g.pose().scale((float) scale, (float) scale);
+        g.pose().pushPose();
+        g.pose().scale((float) scale, (float) scale, 1f);
         int x = (int) (bx / scale);
         int y = (int) (by / scale);
         int s = 24;
@@ -71,12 +71,12 @@ public class KeyStrokes {
             int ty = k.ry + k.rh / 2 - 4;
             g.drawString(mc.font, lbl, tx, ty, tc, false);
         }
-        g.pose().popMatrix();
+        g.pose().popPose();
     }
 
     private boolean isPressed(int code) {
         if (code == -100) return mc.mouseHandler.isLeftPressed();
         if (code == -99) return mc.mouseHandler.isRightPressed();
-        return InputConstants.isKeyDown(mc.getWindow(), code);
+        return InputConstants.isKeyDown(mc.getWindow().getWindow(), code);
     }
 }
