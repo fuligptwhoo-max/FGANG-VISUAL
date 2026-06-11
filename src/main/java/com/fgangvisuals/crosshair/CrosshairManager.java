@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
 
 import javax.imageio.ImageIO;
@@ -26,7 +26,7 @@ import java.nio.file.StandardCopyOption;
 public class CrosshairManager {
     private final Minecraft mc = Minecraft.getInstance();
     private final Path crosshairDir;
-    private ResourceLocation customTexture = null;
+    private int customTextureId = -1;
     private DynamicTexture dynamicTexture = null;
     private String loadedFileName = "";
 
@@ -73,8 +73,7 @@ public class CrosshairManager {
             }
             NativeImage image = NativeImage.read(new FileInputStream(file));
             dynamicTexture = new DynamicTexture(image);
-            customTexture = ResourceLocation.fromNamespaceAndPath(FGANGVisuals.MOD_ID, "crosshair/" + file.getName().toLowerCase().replaceAll("[^a-z0-9_.-]", ""));
-            mc.getTextureManager().register(customTexture, dynamicTexture);
+            customTextureId = dynamicTexture.getId();
             loadedFileName = file.getName();
             FGANGVisuals.LOGGER.info("Loaded crosshair: " + file.getName());
         } catch (Exception e) {
@@ -96,7 +95,7 @@ public class CrosshairManager {
         float opacity = Config.CROSSHAIR_OPACITY.get().floatValue();
         float rot = (float) Math.toRadians(Config.CROSSHAIR_ROTATION.get());
 
-        if (Config.CROSSHAIR_CUSTOM_IMAGE.get() && customTexture != null) {
+        if (Config.CROSSHAIR_CUSTOM_IMAGE.get() && customTextureId != -1) {
             renderCustomImage(g, cx, cy, size, color, opacity, rot);
         } else {
             renderBuiltIn(g, cx, cy, size, color, opacity, rot);
@@ -107,23 +106,43 @@ public class CrosshairManager {
         int baseSize = 16;
         int w = (int) (baseSize * scale);
         int h = w;
-        int x = (int) (cx - w / 2f);
-        int y = (int) (cy - h / 2f);
+        float x1 = cx - w / 2f, y1 = cy - h / 2f;
+        float x2 = cx + w / 2f, y2 = cy + h / 2f;
+
+        float cos = (float) Math.cos(rot), sin = (float) Math.sin(rot);
+        float[] xs = new float[4];
+        float[] ys = new float[4];
+        xs[0] = cx + (x1 - cx) * cos - (y1 - cy) * sin;
+        ys[0] = cy + (x1 - cx) * sin + (y1 - cy) * cos;
+        xs[1] = cx + (x2 - cx) * cos - (y1 - cy) * sin;
+        ys[1] = cy + (x2 - cx) * sin + (y1 - cy) * cos;
+        xs[2] = cx + (x2 - cx) * cos - (y2 - cy) * sin;
+        ys[2] = cy + (x2 - cx) * sin + (y2 - cy) * cos;
+        xs[3] = cx + (x1 - cx) * cos - (y2 - cy) * sin;
+        ys[3] = cy + (x1 - cx) * sin + (y2 - cy) * cos;
 
         RenderSystem.enableBlend();
-        g.pose().pushMatrix();
-        g.pose().translate(cx, cy);
-        g.pose().rotate(rot);
-        g.pose().translate(-cx, -cy);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderTexture(0, customTextureId);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
         float r = ((color >> 16) & 0xFF) / 255f;
         float gr = ((color >> 8) & 0xFF) / 255f;
         float b = (color & 0xFF) / 255f;
         RenderSystem.setShaderColor(r, gr, b, alpha);
-        g.blit(customTexture, x, y, 0, 0, w, h, w, h);
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        g.pose().popMatrix();
+        Tesselator t = Tesselator.getInstance();
+        BufferBuilder builder = t.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        Matrix4f mat = new Matrix4f();
+
+        builder.addVertex(mat, xs[0], ys[0], 0).setUv(0, 0);
+        builder.addVertex(mat, xs[1], ys[1], 0).setUv(1, 0);
+        builder.addVertex(mat, xs[2], ys[2], 0).setUv(1, 1);
+        builder.addVertex(mat, xs[3], ys[3], 0).setUv(0, 1);
+
+        BufferUploader.drawWithShader(builder.buildOrThrow());
+
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.disableBlend();
     }
 
@@ -248,6 +267,6 @@ public class CrosshairManager {
     }
 
     public boolean hasCustomImage() {
-        return customTexture != null;
+        return customTextureId != -1;
     }
 }
