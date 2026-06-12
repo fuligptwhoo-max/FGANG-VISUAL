@@ -17,6 +17,9 @@ import com.fgangvisuals.event.list.EventPacket;
 import com.fgangvisuals.module.Module;
 import com.fgangvisuals.module.ModuleCategory;
 import com.fgangvisuals.module.ModuleInformation;
+import com.fgangvisuals.module.settings.BooleanSetting;
+import com.fgangvisuals.module.settings.ModeSetting;
+import com.fgangvisuals.module.settings.SliderSetting;
 import com.fgangvisuals.module.list.render.hud.Interface;
 import com.fgangvisuals.util.base.Instance;
 import com.fgangvisuals.util.render.math.Animation;
@@ -31,6 +34,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @ModuleInformation(moduleName = "UseTracker", moduleDesc = "Показывает кто подобрал/использовал предмет", moduleCategory = ModuleCategory.MISC)
 public class UseTracker extends Module {
+
+    private final ModeSetting position = new ModeSetting("Позиция", "Top Right", "Center", "Top Right", "Bottom Right", "Custom");
+    private final SliderSetting offsetX = new SliderSetting("Смещение X", 0, -500, 500, 1);
+    private final SliderSetting offsetY = new SliderSetting("Смещение Y", 0, -300, 300, 1);
+    private final SliderSetting scale = new SliderSetting("Масштаб", 1, 0.5, 2, 0.1);
+    private final SliderSetting duration = new SliderSetting("Время (с)", 3, 1, 10, 0.5);
+    private final ModeSetting itemFilter = new ModeSetting("Фильтр предметов", "All", "All", "Strict");
+    private final BooleanSetting showPickups = new BooleanSetting("Подбор", true);
+    private final BooleanSetting showUses = new BooleanSetting("Использование", true);
+    private final BooleanSetting showTotems = new BooleanSetting("Тотемы", true);
 
     private final List<PickupLog> logs = new CopyOnWriteArrayList<>();
 
@@ -80,19 +93,21 @@ public class UseTracker extends Module {
                 String itemName = cleanName.toLowerCase(Locale.ROOT);
 
                 // Проверяем, содержит ли имя одно из разрешенных ключевых слов
-                boolean shouldLog = false;
-                for (String keyword : ALLOWED_PICKUP_KEYWORDS) {
-                    if (itemName.contains(keyword)) {
-                        shouldLog = true;
-                        break;
+                boolean shouldLog = itemFilter.is("All");
+                if (itemFilter.is("Strict")) {
+                    for (String keyword : ALLOWED_PICKUP_KEYWORDS) {
+                        if (itemName.contains(keyword)) {
+                            shouldLog = true;
+                            break;
+                        }
                     }
                 }
 
                 // Если предмет прошел фильтр, добавляем его в лог
-                if (shouldLog) {
+                if (shouldLog && showPickups.getValue()) {
                     stack.setCount(packet.getStackAmount());
                     String playerName = getProtectedName(player); // ИСПОЛЬЗУЕМ ЗАЩИЩЕННЫЙ НИК
-                    logs.add(new PickupLog(playerName, stack, 3000, "Подобрал:"));
+                    logs.add(new PickupLog(playerName, stack, (long) (duration.getValue() * 1000), "Подобрал:"));
                 }
             }
         }
@@ -113,9 +128,9 @@ public class UseTracker extends Module {
                         usedStack = player.getOffHandStack();
                     }
 
-                    if (!usedStack.isEmpty()) {
+                    if (!usedStack.isEmpty() && showUses.getValue()) {
                         String playerName = getProtectedName(player); // ИСПОЛЬЗУЕМ ЗАЩИЩЕННЫЙ НИК
-                        logs.add(new PickupLog(playerName, usedStack.copy(), 3000, "Использовал:"));
+                        logs.add(new PickupLog(playerName, usedStack.copy(), (long) (duration.getValue() * 1000), "Использовал:"));
                     }
                 }
             }
@@ -128,10 +143,11 @@ public class UseTracker extends Module {
                     // Игнорируем потерю тотема самим собой
                     if (player == mc.player) return;
 
+                    if (!showTotems.getValue()) return;
                     String playerName = getProtectedName(player); // ИСПОЛЬЗУЕМ ЗАЩИЩЕННЫЙ НИК
                     ItemStack totemStack = Items.TOTEM_OF_UNDYING.getDefaultStack();
 
-                    logs.add(new PickupLog(playerName, totemStack, 3000, "Потерял:"));
+                    logs.add(new PickupLog(playerName, totemStack, (long) (duration.getValue() * 1000), "Потерял:"));
                 }
             }
         }
@@ -143,10 +159,38 @@ public class UseTracker extends Module {
         int screenWidth = mc.getWindow().getScaledWidth();
         int screenHeight = mc.getWindow().getScaledHeight();
 
-        float startY = (screenHeight / 2f) + 20f;
-        float currentY = startY;
+        float baseX, baseY;
+        switch (position.getValue()) {
+            case "Top Right" -> {
+                baseX = screenWidth - 10;
+                baseY = 10;
+            }
+            case "Bottom Right" -> {
+                baseX = screenWidth - 10;
+                baseY = screenHeight - 10 - (logs.size() * 16f * scale.getFloatValue());
+            }
+            case "Custom" -> {
+                baseX = (float) offsetX.getValue();
+                baseY = (float) offsetY.getValue();
+            }
+            default -> {
+                baseX = screenWidth / 2f;
+                baseY = (screenHeight / 2f) + 20f;
+            }
+        }
 
+        if (!position.is("Custom")) {
+            baseX += (float) offsetX.getValue();
+            baseY += (float) offsetY.getValue();
+        }
+
+        float currentY = baseY;
         Interface hudModule = Instance.get(Interface.class);
+
+        context.getMatrices().push();
+        context.getMatrices().translate(baseX, baseY, 0);
+        context.getMatrices().scale(scale.getFloatValue(), scale.getFloatValue(), 1f);
+        context.getMatrices().translate(-baseX, -baseY, 0);
 
         for (PickupLog log : logs) {
             log.update();
@@ -157,12 +201,26 @@ public class UseTracker extends Module {
                 continue;
             }
 
-            renderLog(context, log, screenWidth, currentY, animValue, hudModule);
+            float logX = baseX;
+            if (position.is("Top Right") || position.is("Bottom Right")) {
+                logX = baseX - totalLogWidth(log);
+            }
+            renderLog(context, log, logX, currentY, animValue, hudModule);
             currentY += (13.0f + 3f) * animValue;
         }
+
+        context.getMatrices().pop();
     }
 
-    private void renderLog(DrawContext context, PickupLog log, int screenWidth, float y, float animValue, Interface hud) {
+    private float totalLogWidth(PickupLog log) {
+        String actionText = log.playerName + " " + log.actionText;
+        String itemName = log.stack.getName().getString();
+        float actionWidth = Fonts.SFMEDIUM.get().getWidth(actionText, 6.5f);
+        float itemWidth = Fonts.SFMEDIUM.get().getWidth(itemName, 6.5f);
+        return 20f + actionWidth + 4.5f + itemWidth + 5f;
+    }
+
+    private void renderLog(DrawContext context, PickupLog log, float x, float y, float animValue, Interface hud) {
         String actionText = log.playerName + " " + log.actionText;
         String itemName = log.stack.getName().getString();
 
@@ -175,7 +233,6 @@ public class UseTracker extends Module {
         float height = 13.0f;
         float totalWidth = 20f + actionWidth + gap + itemWidth + 5f;
 
-        float x = (screenWidth - totalWidth) / 2f;
         int alphaInt = (int) (255 * Math.max(0, Math.min(1, animValue)));
 
         // --- Анимация ---

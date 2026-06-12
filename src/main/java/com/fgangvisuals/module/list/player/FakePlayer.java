@@ -1,10 +1,12 @@
 package com.fgangvisuals.module.list.player;
 
+import com.google.common.eventbus.Subscribe;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import com.fgangvisuals.event.list.EventAttack;
 import com.fgangvisuals.module.Module;
 import com.fgangvisuals.module.ModuleCategory;
 import com.fgangvisuals.module.ModuleInformation;
@@ -26,6 +28,8 @@ public class FakePlayer extends Module {
     private final SliderSetting offsetX = new SliderSetting("Смещение X", 0, -5, 5, 0.1);
     private final SliderSetting offsetY = new SliderSetting("Смещение Y", 0, -5, 5, 0.1);
     private final SliderSetting offsetZ = new SliderSetting("Смещение Z", 0, -5, 5, 0.1);
+
+    private float currentHealth;
 
     @Override
     public void onEnable() {
@@ -51,11 +55,8 @@ public class FakePlayer extends Module {
             fakePlayer.equipStack(EquipmentSlot.FEET, ItemStack.EMPTY);
         }
 
-        if (!invincible.getValue()) {
-            fakePlayer.setHealth(health.getFloatValue());
-        } else {
-            fakePlayer.setHealth(Float.MAX_VALUE);
-        }
+        currentHealth = invincible.getValue() ? Float.MAX_VALUE : health.getFloatValue();
+        fakePlayer.setHealth(currentHealth);
 
         fakePlayer.setPos(
                 mc.player.getX() + offsetX.getValue(),
@@ -63,6 +64,29 @@ public class FakePlayer extends Module {
                 mc.player.getZ() + offsetZ.getValue()
         );
         mc.world.addEntity(fakePlayer);
+    }
+
+    @Subscribe
+    private void onAttack(EventAttack event) {
+        if (invincible.getValue()) return;
+        if (fakePlayer == null || event.getEntity() != fakePlayer) return;
+
+        float damage = 1.0f;
+        ItemStack weapon = mc.player.getMainHandStack();
+        if (weapon != null && !weapon.isEmpty()) {
+            // Simple damage approximation; real calculation is much more complex
+            damage = 2.0f + (float) (Math.random() * 2.0);
+        }
+        if (event.isCrit()) damage *= 1.5f;
+
+        currentHealth -= damage;
+        fakePlayer.setHealth(Math.max(currentHealth, 0));
+
+        if (currentHealth <= 0) {
+            fakePlayer.remove(Entity.RemovalReason.DISCARDED);
+            mc.world.removeEntity(fakePlayer.getId(), Entity.RemovalReason.DISCARDED);
+            fakePlayer = null;
+        }
     }
 
     @Override

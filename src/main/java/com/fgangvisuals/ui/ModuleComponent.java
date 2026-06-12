@@ -48,6 +48,7 @@ public class ModuleComponent extends Component {
                 case ColorSetting option -> components.add(new ColorPickerComponent(option));
                 case ZoneListSetting option -> components.add(new ZoneListComponent(option));
                 case ItemListSetting option -> components.add(new ItemListComponent(option));
+                case ButtonSetting option -> components.add(new ButtonComponent(option));
                 default -> {}
             }
         }

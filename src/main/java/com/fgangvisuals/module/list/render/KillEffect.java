@@ -34,7 +34,7 @@ public class KillEffect extends Module {
 
     @Subscribe
     private void onAttack(EventAttack e) {
-        if (e.getEntity() instanceof PlayerEntity) entity = e.getEntity();
+        entity = e.getEntity();
     }
 
     @Subscribe

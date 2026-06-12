@@ -9,6 +9,7 @@ import com.fgangvisuals.module.ModuleCategory;
 import com.fgangvisuals.ui.component.SearchField;
 import com.fgangvisuals.util.IMinecraft;
 import com.fgangvisuals.util.cursor.CursorManager;
+import com.fgangvisuals.util.draggable.DragManager;
 import com.fgangvisuals.util.render.helper.HoverUtil;
 import com.fgangvisuals.util.render.math.Easing;
 import com.fgangvisuals.util.render.msdf.Fonts;
@@ -102,6 +103,8 @@ public class ClickGuiFrame extends Screen implements IMinecraft {
             }
         }
 
+        DragManager.onDrawAll();
+
         long window = mc.getWindow().getHandle();
         if (CursorManager.shouldBeHand()) GLFW.glfwSetCursor(window, GLFW.glfwCreateStandardCursor(GLFW.GLFW_HAND_CURSOR));
         else if (CursorManager.shouldIBeam()) GLFW.glfwSetCursor(window, GLFW.glfwCreateStandardCursor(GLFW.GLFW_IBEAM_CURSOR));
@@ -115,6 +118,8 @@ public class ClickGuiFrame extends Screen implements IMinecraft {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        DragManager.onClickAll(button);
+
         themeManager.mouseClicked(mouseX, mouseY, button);
         searchField.mouseClicked(mouseX, mouseY, button);
 
@@ -134,11 +139,19 @@ public class ClickGuiFrame extends Screen implements IMinecraft {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        DragManager.onReleaseAll(button);
+
         themeManager.mouseReleased(mouseX, mouseY, button);
         for (Panel panel : panels) {
             panel.mouseReleased(mouseX, mouseY, button);
         }
         return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void removed() {
+        DragManager.onReleaseAll(0);
+        super.removed();
     }
 
     @Override
