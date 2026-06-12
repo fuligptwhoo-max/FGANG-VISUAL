@@ -48,7 +48,7 @@ public class ModuleStorage implements IMinecraft {
                 new Ambience(), new BlockOverlay(), new FreeLook(),
                 new Trails(), new CustomHitbox(), new FastExp(), new HitSounds(), new AspectRatio(),
                 new DiscordRPC(), new FakePlayer(), new Interface(), new AutoLeave(), new AutoSwap(), new ServerHelper(),
-                new ItemScroller()
+                new ItemScroller(), new CustomCrosshair()
         ));
 
         FGANGVisuals.getInstance().getEventBus().register(this);
