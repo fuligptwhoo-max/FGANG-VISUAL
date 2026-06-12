@@ -1,0 +1,63 @@
+[21:36:25] [Datafixer Bootstrap/INFO]: 243 Datafixer optimizations took 287 milliseconds
+[21:36:25] [main/WARN]: Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
+[21:36:29] [Render thread/INFO]: Setting user: fuliwhoo
+[21:36:29] [Render thread/INFO]: Backend library: LWJGL version 3.3.3+5
+[21:36:30] [Render thread/INFO]: Reloading ResourceManager: vanilla
+[21:36:30] [Worker-Main-7/INFO]: Found unifont_all_no_pua-16.0.01.hex, loading
+[21:36:30] [Worker-Main-1/INFO]: Found unifont_jp_patch-16.0.01.hex, loading
+[21:36:31] [Render thread/INFO]: OpenAL initialized on device OpenAL Soft on Динамики (Realtek(R) Audio)
+[21:36:31] [Render thread/INFO]: Sound engine started
+[21:36:31] [Render thread/INFO]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 2048x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[21:36:31] [Render thread/INFO]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[21:36:32] [IO-Worker-1/INFO]: Could not authorize you against Realms server: javax.ws.rs.NotAuthorizedException: HTTP 401 Unauthorized
+[21:36:32] [IO-Worker-1/ERROR]: Couldn't connect to realms
+fih: Realms authentication error with message 'javax.ws.rs.NotAuthorizedException: HTTP 401 Unauthorized'
+	at fgl.a(SourceFile:445) ~[1.21.4.jar:?]
+	at fgl.g(SourceFile:232) ~[1.21.4.jar:?]
+	at fgf.c(SourceFile:51) ~[1.21.4.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1583) [?:?]
+[21:37:25] [Render thread/INFO]: Loaded 1370 recipes
+[21:37:25] [Render thread/INFO]: Loaded 1481 advancements
+[21:37:25] [Server thread/INFO]: Starting integrated minecraft server version 1.21.4
+[21:37:25] [Server thread/INFO]: Generating keypair
+[21:37:25] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[21:37:25] [Render thread/INFO]: Подготовка области возрождения: 0%
+[21:37:25] [Render thread/INFO]: Time elapsed: 156 ms
+[21:37:25] [Server thread/INFO]: Changing view distance to 12, from 10
+[21:37:25] [Server thread/INFO]: Changing simulation distance to 12, from 0
+[21:37:26] [Server thread/INFO]: fuliwhoo[local:E:1caf5e52] logged in with entity id 38 at (10.429969881406475, -56.75075534921164, -1.3279328740371976)
+[21:37:26] [Server thread/INFO]: fuliwhoo присоединился к игре
+[21:37:26] [Render thread/INFO]: Loaded 56 advancements
+[21:37:26] [Worker-Main-2/INFO]: [STDOUT]: https://littleskin.cn/textures/9f8747935761d7f5f2fb552ad33c6c8a39d357581bb7065c3a003d1b2a40ad00
+[21:37:26] [Worker-Main-2/INFO]: [STDOUT]: https://littleskin.cn/textures/8b88b9bd02a76e46437faeeb840bbeeb53b886bca7b978f53d01a14fa90bda8b
+[21:37:35] [Server thread/INFO]: [Not Secure] <fuliwhoo> .bind
+[21:37:35] [Render thread/INFO]: [CHAT] <fuliwhoo> .bind
+[21:37:37] [Render thread/INFO]: Stopping!
+[21:37:37] [Server thread/INFO]: fuliwhoo lost connection: Отключение
+[21:37:37] [Server thread/INFO]: fuliwhoo покинул игру
+[21:37:37] [Server thread/INFO]: Stopping singleplayer server as player logged out
+[21:37:37] [Server thread/INFO]: Stopping server
+[21:37:37] [Server thread/INFO]: Saving players
+[21:37:37] [Server thread/INFO]: Saving worlds
+[21:37:37] [Server thread/INFO]: Saving chunks for level 'ServerLevel[test]'/minecraft:overworld
+[21:37:37] [Server thread/INFO]: Saving chunks for level 'ServerLevel[test]'/minecraft:the_end
+[21:37:37] [Server thread/INFO]: Saving chunks for level 'ServerLevel[test]'/minecraft:the_nether
+[21:37:37] [Server thread/INFO]: ThreadedAnvilChunkStorage (test): All chunks are saved
+[21:37:37] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[21:37:37] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[21:37:37] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved

@@ -27,7 +27,7 @@ public class MinecraftClientMixin {
     private int accumulatedCalls = 0;
 
     @Unique
-    private static final String TITLE_TEXT = "Чекушка Visuals";
+    private static final String TITLE_TEXT = "FGANG Visuals";
 
     @Unique
     private static final long SHIMMER_CYCLE = 3000L;
@@ -40,7 +40,7 @@ public class MinecraftClientMixin {
 
     @Inject(method = "getWindowTitle", at = @At(value = "HEAD"), cancellable = true)
     private void getWindowTitle(CallbackInfoReturnable<String> cir) {
-        cir.setReturnValue("Чекушка Visuals");
+        cir.setReturnValue("FGANG Visuals");
     }
 
     @Inject(method = "render", at = @At(value = "RETURN"))

@@ -1178,7 +1178,7 @@ public class Interface extends Module {
     private void renderWatermarkCelestial(DrawContext context) {
         String playerName = mc.player.getName().getString();
 
-        String fullText = "Чекушка Visuals | " + playerName;
+        String fullText = "FGANG Visuals | " + playerName;
         float fontSize = 7.5f;
 
         float x = watermarkDrag.getX();
@@ -1376,7 +1376,7 @@ public class Interface extends Module {
 
     private void renderNursultanName(DrawContext context) {
         String playerName = mc.player.getName().getString();
-        String brandText = "Чекушка Visuals | " + playerName;
+        String brandText = "FGANG Visuals | " + playerName;
         float x = watermarkDrag.getX();
         float y = watermarkDrag.getY();
         float height = 15f;
@@ -2652,7 +2652,7 @@ public class Interface extends Module {
 
         public static void render(DrawContext context) {
             float centerX = MinecraftClient.getInstance().getWindow().getScaledWidth() / 2f;
-            float startY = (MinecraftClient.getInstance().getWindow().getScaledHeight() / 2f) + 20f;
+            float startY = MinecraftClient.getInstance().getWindow().getScaledHeight() - 55f;
             float offset = 0;
 
             for (Notification n : notifications) {
