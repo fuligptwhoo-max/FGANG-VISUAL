@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "fgangvisuals",
 	"accessWidener": "fgangvisuals.accesswidener",
-	"version": "1.0.0",
+	"version": "1.0.4",
 	"name": "FGANG Visuals",
 	"description": "Visual mod for Minecraft",
 	"authors": [
