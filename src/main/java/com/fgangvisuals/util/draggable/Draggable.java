@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.screen.ChatScreen;
 import com.fgangvisuals.module.Module;
+import com.fgangvisuals.ui.ClickGuiFrame;
 import com.fgangvisuals.util.IMinecraft;
 import com.fgangvisuals.util.render.math.MathUtil;
 
@@ -35,7 +36,7 @@ public class Draggable implements IMinecraft {
     }
 
     public final void onDraw() {
-        if (!(mc.currentScreen instanceof ChatScreen)) return;
+        if (!(mc.currentScreen instanceof ChatScreen) && !(mc.currentScreen instanceof ClickGuiFrame)) return;
 
         if (dragging) {
             int mouseX = normaliseX();
