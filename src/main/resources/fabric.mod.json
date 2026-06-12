@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "fgangvisuals",
+	"accessWidener": "fgangvisuals.accesswidener",
+	"version": "1.0.0",
+	"name": "FGANG Visuals",
+	"description": "Visual mod for Minecraft",
+	"authors": [
+		"FGANG"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/fgangvisuals/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.fgangvisuals.FGANGVisuals"
+		]
+	},
+	"mixins": [
+		"fgangvisuals.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
