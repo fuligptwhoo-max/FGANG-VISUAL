@@ -18,6 +18,9 @@
 	"entrypoints": {
 		"main": [
 			"com.fgangvisuals.FGANGVisuals"
+		],
+		"client": [
+			"com.fgangvisuals.FGANGVisualsClient"
 		]
 	},
 	"mixins": [

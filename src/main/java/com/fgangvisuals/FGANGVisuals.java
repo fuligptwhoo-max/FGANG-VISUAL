@@ -4,16 +4,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
 import com.fgangvisuals.event.list.EventKeyInput;
 import com.fgangvisuals.module.Module;
 import com.fgangvisuals.module.ModuleStorage;
-import com.fgangvisuals.module.list.render.ClickGui;
 import com.fgangvisuals.module.list.render.HitSounds;
 import com.fgangvisuals.module.settings.Setting;
 import com.fgangvisuals.util.commands.CommandDispatcher;
@@ -31,7 +25,12 @@ import com.fgangvisuals.util.staff.StaffManager;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FGANGVisuals implements ModInitializer {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger("fgangvisuals");
 
     private static FGANGVisuals instance;
 
@@ -104,6 +103,8 @@ public class FGANGVisuals implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        LOGGER.info("FGANGVisuals main entrypoint initialized");
+
         getModuleStorage().injectRegisterModules();
         HitSounds.registerSounds();
         componentManager.init();
@@ -118,23 +119,7 @@ public class FGANGVisuals implements ModInitializer {
             }
         }
 
-        registerClickGuiKeybind();
-    }
-
-    private void registerClickGuiKeybind() {
-        KeyBinding clickGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.fgangvisuals.clickgui",
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_RIGHT_SHIFT,
-                "category.fgangvisuals"
-        ));
-
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            ClickGui clickGui = getModuleStorage().get(ClickGui.class);
-            if (clickGui != null) {
-                clickGui.setKey(clickGuiKey.getDefaultKey().getCode());
-            }
-        });
+        LOGGER.info("FGANGVisuals initialized with {} modules", moduleStorage.getModules().size());
     }
 
     @Subscribe
