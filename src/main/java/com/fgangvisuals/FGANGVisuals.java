@@ -4,12 +4,18 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import org.lwjgl.glfw.GLFW;
 import com.fgangvisuals.event.list.EventKeyInput;
 import com.fgangvisuals.module.Module;
 import com.fgangvisuals.module.ModuleStorage;
-import com.fgangvisuals.module.settings.Setting;
+import com.fgangvisuals.module.list.render.ClickGui;
 import com.fgangvisuals.module.list.render.HitSounds;
+import com.fgangvisuals.module.settings.Setting;
 import com.fgangvisuals.util.commands.CommandDispatcher;
 import com.fgangvisuals.util.commands.manager.CommandRepository;
 import com.fgangvisuals.util.config.ConfigManager;
@@ -111,6 +117,24 @@ public class FGANGVisuals implements ModInitializer {
                 setting.setOnChange(() -> ConfigManager.autoSave());
             }
         }
+
+        registerClickGuiKeybind();
+    }
+
+    private void registerClickGuiKeybind() {
+        KeyBinding clickGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.fgangvisuals.clickgui",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_RIGHT_SHIFT,
+                "category.fgangvisuals"
+        ));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            ClickGui clickGui = getModuleStorage().get(ClickGui.class);
+            if (clickGui != null) {
+                clickGui.setKey(clickGuiKey.getDefaultKey().getCode());
+            }
+        });
     }
 
     @Subscribe
